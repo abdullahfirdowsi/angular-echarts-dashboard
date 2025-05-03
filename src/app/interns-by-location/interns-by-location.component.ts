@@ -31,7 +31,7 @@ export class InternsByLocationComponent implements OnInit, AfterViewInit {
 
     this.chart.setOption({
       title: {
-        text: 'Interns by Location',
+        text: 'Interns Distribution by Working Locations 🌍',
         top: '5%' 
       },
       tooltip: {

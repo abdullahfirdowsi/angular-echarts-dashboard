@@ -1,2 +1,30 @@
-<h1>{{ title }}</h1>
-<p>{{ description }}</p>
+<!-- <div class="title-section">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+    <div class="additional-info">
+      <p><strong>Total Number of Interns Hired in This Batch:</strong> {{ totalInterns }}</p>
+      <p><strong>Total Number of Unique Locations:</strong> {{ totalLocations }}</p>
+      <p><strong>Total Number of Unique Colleges:</strong> {{ totalColleges }}</p>
+      <p><strong>Total Number of Unique Programming Languages:</strong> {{ totalProgrammingLanguages }}</p>
+    </div>
+  </div> -->
+
+  <div class="title-section">
+    <h1>{{ title }}</h1>
+    <!-- <p>{{ description }}</p> -->
+    <p [innerHTML]="description"></p>
+    <div class="info-boxes">
+      <div class="info-box">
+        <h2>Total Interns</h2>
+        <p>{{ totalInterns }}</p>
+      </div>
+      <div class="info-box">
+        <h2>Locations</h2>
+        <p>{{ locations.join(', ') }}</p>
+      </div>
+      <div class="info-box">
+        <h2>Colleges</h2>
+        <p>{{ colleges.join(', ') }}</p>
+      </div>
+    </div>
+  </div>

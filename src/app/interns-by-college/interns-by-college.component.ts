@@ -31,7 +31,7 @@ export class InternsByCollegeComponent implements OnInit, AfterViewInit {
 
     this.chart.setOption({
       title: {
-        text: 'Interns by College',
+        text: 'Interns Distribution by Academic Institution 🎓',
         top: '5%' 
       },
       tooltip: {
