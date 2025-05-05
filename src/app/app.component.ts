@@ -14,7 +14,7 @@ import { InternsByProgrammingLanguageComponent } from './interns-by-programming-
             InternsByCollegeComponent, 
             InternsByAllocatedBUComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'angular-echarts-dashboard';
