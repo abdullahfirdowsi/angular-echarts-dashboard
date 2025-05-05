@@ -40,7 +40,7 @@ export class InternsByLocationComponent implements OnInit, AfterViewInit {
       legend: {
         orient: 'vertical',
         left: 'left',
-        top: '10%' 
+        top: '15%' 
       },
       series: [
         {

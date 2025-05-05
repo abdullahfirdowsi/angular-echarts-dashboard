@@ -9,10 +9,9 @@ import { Intern } from '../intern.model';
 })
 export class TitleDescriptionComponent implements OnInit {
   title = 'iLink Digital Interns Dashboard';
-  // description = `This dashboard provides an overview of the interns batch 2025, showcasing their distribution based on various criteria, such as location, college, and business unit allocation.
-  //                 It provides actionable insights through interactive charts and visualizations.`;
-  description = `This dashboard provides an overview of the interns batch 2025, showcasing their distribution based on various criteria, such as location, college, and business unit allocation.<br>
-               It provides actionable insights through interactive charts and visualizations.`;
+  description = 'This dashboard displays information about the interns of iLink Digital - Batch 2025.';
+  // description = `This dashboard provides an overview of the interns batch 2025, showcasing their distribution based on various criteria, such as location, college, and business unit allocation.<br>
+              //  It provides actionable insights through interactive charts and visualizations.`;
   totalInterns!: number;
   locations!: string[];
   colleges!: string[];
