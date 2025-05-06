@@ -35,7 +35,7 @@ This project is an Angular application that displays a dashboard with various ch
    ```bash
    ng serve
 
-   Open your browser and navigate to http://localhost:4200/
+Open your browser and navigate to http://localhost:4200/
    
 ## Components
 
