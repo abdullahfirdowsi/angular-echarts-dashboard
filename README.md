@@ -39,6 +39,8 @@ Open your browser and navigate to http://localhost:4200/
 ### Project Output Screenshot
 
 ![Dashboard Screenshot](public/output-1.png)
+![Dashboard Screenshot](public/output-2.png)
+![Dashboard Screenshot](public/output-3.png)
 
 ## Data
 The data is fetched from a C# backend service that reads data from an Excel sheet. The backend service provides various datasets used in the visualizations.
