@@ -5,7 +5,6 @@
 This project is an Angular application that displays a dashboard with various charts visualizing data about interns at iLink Digital. The dashboard includes:
 
 - A header with additional information.
-- A dropdown to select different charts.
 - Charts for:
   - Interns by Location (Pie Chart)
   - Interns by College (Pie Chart)
