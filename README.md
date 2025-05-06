@@ -78,7 +78,6 @@ The Angular application will fetch data from the backend service endpoints.
 ## Features
 
 - **Header Section**: Displays the title, description, and additional information about the interns.
-- **Chart Selection Dropdown**: Allows the user to select which chart to view.
 - **Pie Charts**:
   - Interns by Location
   - Interns by College
