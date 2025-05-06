@@ -23,7 +23,7 @@ This project is an Angular application that displays a dashboard with various ch
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/angular-echarts-dashboard.git
+   git clone https://github.com/abdullahfirdowsi/angular-echarts-dashboard.git
    cd angular-echarts-dashboard
    
 2. Install dependencies:
@@ -35,7 +35,18 @@ This project is an Angular application that displays a dashboard with various ch
    ng serve
 
 Open your browser and navigate to http://localhost:4200/
-   
+
+## Data
+The data is fetched from a C# backend service that reads data from an Excel sheet. The backend service provides various datasets used in the visualizations.
+
+### Backend Service
+The C# backend service is responsible for reading data from the Excel sheet and providing it to the Angular frontend. The service exposes endpoints for each dataset required by the frontend components.
+
+- Running the Backend Service
+- Ensure the C# backend service is running. Follow the instructions provided in the backend service repository to set it up and run it.
+
+The Angular application will fetch data from the backend service endpoints.
+
 ## Components
 
 ### TitleDescriptionComponent
@@ -58,17 +69,6 @@ Open your browser and navigate to http://localhost:4200/
 
 - Displays a bar chart showing the distribution of interns by programming language.
 
-## Data
-The data is fetched from a C# backend service that reads data from an Excel sheet. The backend service provides various datasets used in the visualizations.
-
-### Backend Service
-The C# backend service is responsible for reading data from the Excel sheet and providing it to the Angular frontend. The service exposes endpoints for each dataset required by the frontend components.
-
-- Running the Backend Service
-- Ensure the C# backend service is running. Follow the instructions provided in the backend service repository to set it up and run it.
-
-The Angular application will fetch data from the backend service endpoints.
-
 ## Features
 
 - **Header Section**: Displays the title, description, and additional information about the interns.
@@ -78,7 +78,3 @@ The Angular application will fetch data from the backend service endpoints.
   - Interns by College
 - **Scatter Plot**: Interns by Allocated Business Unit and Location
 - **Bar Chart**: Interns by Programming Language
-
-
-
-
