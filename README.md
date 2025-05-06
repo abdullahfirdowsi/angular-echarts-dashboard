@@ -41,23 +41,23 @@ This project is an Angular application that displays a dashboard with various ch
 
 ### TitleDescriptionComponent
 
-Displays the title and description of the application, along with additional information such as total interns, locations, and colleges.
+- Displays the title and description of the application, along with additional information such as total interns, locations, and colleges.
 
 ### InternsByLocationComponent
 
-Displays a pie chart showing the distribution of interns by location.
+- Displays a pie chart showing the distribution of interns by location.
 
 ### InternsByCollegeComponent
 
-Displays a pie chart showing the distribution of interns by college.
+- Displays a pie chart showing the distribution of interns by college.
 
 ### InternsByAllocatedBUComponent
 
-Displays a scatter plot showing the relationship between allocated business units and locations, with the count of interns.
+- Displays a scatter plot showing the relationship between allocated business units and locations, with the count of interns.
 
 ### InternsByProgrammingLanguageComponent
 
-Displays a bar chart showing the distribution of interns by programming language.
+- Displays a bar chart showing the distribution of interns by programming language.
 
 ## Data
 The data is fetched from a C# backend service that reads data from an Excel sheet. The backend service provides various datasets used in the visualizations.
@@ -85,7 +85,44 @@ The Angular application will fetch data from the backend service endpoints.
 
 ### Project Structure
 
-angular-echarts-dashboard/ ├── e2e/ ├── node_modules/ ├── src/ │ ├── app/ │ │ ├── app.component.css │ │ ├── app.component.html │ │ ├── app.component.ts │ │ ├── app.module.ts │ │ ├── title-description/ │ │ │ ├── title-description.component.css │ │ │ ├── title-description.component.html │ │ │ ├── title-description.component.ts │ │ ├── interns-by-location/ │ │ │ ├── interns-by-location.component.css │ │ │ ├── interns-by-location.component.html │ │ │ ├── interns-by-location.component.ts │ │ ├── interns-by-college/ │ │ │ ├── interns-by-college.component.css │ │ │ ├── interns-by-college.component.html │ │ │ ├── interns-by-college.component.ts │ │ ├── interns-by-allocated-bu/ │ │ │ ├── interns-by-allocated-bu.component.css │ │ │ ├── interns-by-allocated-bu.component.html │ │ │ ├── interns-by-allocated-bu.component.ts │ │ ├── interns-by-programming-language/ │ │ │ ├── interns-by-programming-language.component.css │ │ │ ├── interns-by-programming-language.component.html │ │ │ ├── interns-by-programming-language.component.ts │ ├── assets/ │ ├── environments/ │ ├── index.html │ ├── main.ts │ ├── styles.css ├── angular.json ├── package.json ├── tsconfig.json ├── db.json // Mock data file ├── README.md
+angular-echarts-dashboard/
+├── e2e/
+├── node_modules/
+├── src/
+│   ├── app/
+│   │   ├── app.component.css
+│   │   ├── app.component.html
+│   │   ├── app.component.ts
+│   │   ├── app.module.ts
+│   │   ├── title-description/
+│   │   │   ├── title-description.component.css
+│   │   │   ├── title-description.component.html
+│   │   │   ├── title-description.component.ts
+│   │   ├── interns-by-location/
+│   │   │   ├── interns-by-location.component.css
+│   │   │   ├── interns-by-location.component.html
+│   │   │   ├── interns-by-location.component.ts
+│   │   ├── interns-by-college/
+│   │   │   ├── interns-by-college.component.css
+│   │   │   ├── interns-by-college.component.html
+│   │   │   ├── interns-by-college.component.ts
+│   │   ├── interns-by-allocated-bu/
+│   │   │   ├── interns-by-allocated-bu.component.css
+│   │   │   ├── interns-by-allocated-bu.component.html
+│   │   │   ├── interns-by-allocated-bu.component.ts
+│   │   ├── interns-by-programming-language/
+│   │   │   ├── interns-by-programming-language.component.css
+│   │   │   ├── interns-by-programming-language.component.html
+│   │   │   ├── interns-by-programming-language.component.ts
+│   ├── assets/
+│   ├── environments/
+│   ├── index.html
+│   ├── main.ts
+│   ├── styles.css
+├── angular.json
+├── package.json
+├── tsconfig.json
+├── README.md
 
 ## Features
 
