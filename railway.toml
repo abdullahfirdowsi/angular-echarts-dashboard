@@ -1,0 +1,12 @@
+[build]
+builder = "nixpacks"
+buildCommand = "ng build --configuration production"
+
+[deploy]
+startCommand = "npm run start"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+
+[deploy.lifecycle]
+startupTimeout = "5m"
+
