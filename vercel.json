@@ -7,7 +7,7 @@
       "config": {
         "buildCommand": "npm run build",
         "outputDirectory": "dist/angular-echarts-dashboard",
-        "nodeVersion": "18.x"
+        "nodeVersion": "22.x"
       }
     }
   ],
