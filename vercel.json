@@ -5,7 +5,8 @@
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["dist/**"]
+        "includeFiles": ["dist/**"],
+        "maxDuration": 60
       }
     },
     {
@@ -70,11 +71,5 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "regions": ["bom1"],
-  "functions": {
-    "server.js": {
-      "maxDuration": 60,
-      "memory": 1024
-    }
-  }
+  "regions": ["bom1"]
 }

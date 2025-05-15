@@ -2,91 +2,85 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const fetch = require('node-fetch');
 
 const app = express();
 
-// Configure CORS
+// CORS configuration
 app.use(cors({
-  origin: true, // Reflects the request origin as allowed
-  credentials: true, // Allows cookies to be sent with requests
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  maxAge: 86400
 }));
 
-// Enable pre-flight requests for all routes
+// Enable pre-flight requests
 app.options('*', cors());
 
-const distPath = path.join(__dirname, 'dist/angular-echarts-dashboard');
+// Parse JSON bodies
+app.use(express.json());
 
-// Verify the distribution path exists
-if (!fs.existsSync(distPath)) {
-  console.error(`Error: Distribution directory not found at ${distPath}`);
-}
+// API forwarding using node-fetch
+app.use('/api', async (req, res) => {
+  const targetUrl = `https://interns-api-ovvy.onrender.com${req.url}`;
+  
+  try {
+    console.log(`Forwarding request to: ${targetUrl}`);
+    
+    const response = await fetch(targetUrl, {
+      method: req.method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...req.headers
+      },
+      body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
+    });
 
-// API Proxy Configuration - must be defined before static files
-app.use('/api', createProxyMiddleware({
-  target: 'https://interns-api-ovvy.onrender.com',
-  changeOrigin: true,
-  pathRewrite: {
-    '^/api': '/api' // Rewrite path if needed
-  },
-  onProxyReq: (proxyReq, req, res) => {
-    // Log proxy requests for debugging
-    console.log(`Proxying ${req.method} request to: ${proxyReq.path}`);
-  },
-  onProxyRes: (proxyRes, req, res) => {
-    // Log proxy responses for debugging
-    console.log(`Proxy response: ${proxyRes.statusCode} for ${req.url}`);
-  },
-  onError: (err, req, res) => {
-    // Handle proxy errors
-    console.error('Proxy error:', err);
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (error) {
+    console.error('API Error:', error);
     res.status(500).json({
-      status: 500,
-      message: 'API Service Temporarily Unavailable',
-      timestamp: new Date().toISOString(),
-      path: req.url
+      error: 'API Error',
+      message: 'Unable to reach the API server'
     });
   }
-}));
-
-// Serve static files
-app.use(express.static(distPath));
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
+  res.status(200).json({ status: 'UP' });
 });
 
-// Angular routes - place this after API routes
-app.get('/*', (req, res) => {
-  const indexPath = path.join(distPath, 'index.html');
-  
-  // Check if index.html exists
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).send('Application files not found. Build may have failed.');
-  }
-});
+// Serve static files
+const distPath = path.join(__dirname, 'dist/angular-echarts-dashboard');
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Server error:', err);
+// Verify distribution path
+if (fs.existsSync(distPath)) {
+  // Serve static files
+  app.use(express.static(distPath));
   
-  // Send structured error response
-  res.status(500).json({
-    status: 500,
-    message: 'Internal Server Error',
-    error: process.env.NODE_ENV === 'production' ? undefined : err.message,
-    timestamp: new Date().toISOString(),
-    path: req.url
+  // All other routes to Angular app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
   });
+} else {
+  console.error('Distribution directory not found:', distPath);
+  // Set up a route to show the error
+  app.use((req, res) => {
+    res.status(500).send('Application files not found. Please rebuild the application.');
+  });
+}
+
+// Error handling
+app.use((err, req, res, next) => {
+  console.error('Server Error:', err);
+  res.status(500).send('Internal Server Error');
 });
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-  console.log(`API requests will be proxied to: https://interns-api-ovvy.onrender.com`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
