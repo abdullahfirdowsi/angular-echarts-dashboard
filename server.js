@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import cors from 'cors';
-import fetch from 'node-fetch';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 
@@ -22,32 +22,26 @@ app.options('*', cors());
 // Parse JSON bodies
 app.use(express.json());
 
-// API forwarding using node-fetch
-app.use('/api', async (req, res) => {
-  const targetUrl = `https://interns-api-ovvy.onrender.com${req.url}`;
-  
-  try {
-    console.log(`Forwarding request to: ${targetUrl}`);
-    
-    const response = await fetch(targetUrl, {
-      method: req.method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...req.headers
-      },
-      body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
-    });
-
-    const data = await response.json();
-    res.status(response.status).json(data);
-  } catch (error) {
-    console.error('API Error:', error);
+// API forwarding using http-proxy-middleware
+app.use('/api', createProxyMiddleware({
+  target: 'https://interns-api-ovvy.onrender.com',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api': '' // Remove the /api prefix when forwarding
+  },
+  logLevel: 'debug',
+  onProxyReq: (proxyReq, req, res) => {
+    // Log outgoing requests
+    console.log(`Forwarding request to: ${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`);
+  },
+  onError: (err, req, res) => {
+    console.error('Proxy Error:', err);
     res.status(500).json({
-      error: 'API Error',
+      error: 'Proxy Error',
       message: 'Unable to reach the API server'
     });
   }
-});
+}));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
