@@ -1,26 +1,129 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
+import { retry, catchError, timeout, delay, mergeMap } from 'rxjs/operators';
 import { Intern } from './intern.model'; 
+
+// Error response interface for type safety
+export interface ApiErrorResponse {
+  status: number;
+  message: string;
+  timestamp?: string;
+  path?: string;
+  error?: any;
+}
+
+// API response wrapper interface
+export interface ApiResponse<T> {
+  data?: T;
+  error?: ApiErrorResponse;
+  success: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class InternsService {
-  // private apiUrl = 'http://localhost:5000/api/interns';
-
-  // constructor(private http: HttpClient) {}
-
-  // getInterns(): Observable<any> {
-  //   return this.http.get(this.apiUrl);
-  // }
   private apiUrl = environment.apiUrl;
+  private config = environment.apiConfig;
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Get all interns with error handling, retry logic, and timeout
+   */
   getInterns(): Observable<Intern[]> {
-    return this.http.get<Intern[]>(`${this.apiUrl}/interns`);
+    return this.http.get<Intern[]>(`${this.apiUrl}/interns`)
+      .pipe(
+        // Set timeout based on environment configuration
+        timeout(this.config.timeout),
+        
+        // Implement retry with exponential backoff
+        retry({
+          count: this.config.retries,
+          delay: (error, retryCount) => {
+            console.log(`Retry attempt: ${retryCount} for error:`, error);
+            // Exponential backoff: increase delay with each retry
+            const retryDelayTime = retryCount * this.config.retryDelay;
+            console.log(`Retrying in ${retryDelayTime}ms`);
+            return of(null).pipe(delay(retryDelayTime));
+          }
+        }),
+        
+        // Handle errors
+        catchError((error) => this.handleApiError(error))
+      );
+  }
+
+  /**
+   * Generic error handler for API requests
+   */
+  private handleApiError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = this.config.errorMessages.default;
+    
+    // Log the error for debugging
+    console.error('API Error:', error);
+
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Client Error: ${error.error.message}`;
+    } else if (error.status) {
+      // Server-side error
+      switch (error.status) {
+        case 0:
+          errorMessage = this.config.errorMessages.networkError;
+          break;
+        case 404:
+          errorMessage = this.config.errorMessages.notFound;
+          break;
+        case 408:
+        case 504:
+          errorMessage = this.config.errorMessages.timeout;
+          break;
+        case 500:
+          errorMessage = this.config.errorMessages.serverError;
+          break;
+        default:
+          errorMessage = `Server Error: ${error.status} - ${error.message}`;
+      }
+    }
+
+    // You can implement UI notification here or use a toast service
+    this.showErrorNotification(errorMessage);
+
+    // Return an observable that errors
+    return throwError(() => ({
+      status: error.status || 500,
+      message: errorMessage,
+      error: error.error,
+      timestamp: new Date().toISOString(),
+      path: error.url || 'unknown'
+    } as ApiErrorResponse));
+  }
+
+  /**
+   * Shows an error notification to the user
+   * This is a placeholder - implement actual UI notification based on your app's UI framework
+   */
+  private showErrorNotification(message: string): void {
+    // For now, just log to console - in a real app, this would show a toast/notification
+    console.warn('API Error Notification:', message);
+    
+    // Example of how you might integrate with a notification service:
+    // this.notificationService.showError(message);
+  }
+
+  /**
+   * Gets a single intern by ID with error handling
+   */
+  getInternById(id: string): Observable<Intern> {
+    return this.http.get<Intern>(`${this.apiUrl}/interns/${id}`)
+      .pipe(
+        timeout(this.config.timeout),
+        retry(this.config.retries),
+        catchError((error) => this.handleApiError(error))
+      );
   }
 }
 
