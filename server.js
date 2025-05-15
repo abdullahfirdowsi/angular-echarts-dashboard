@@ -1,8 +1,9 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const cors = require('cors');
-const fetch = require('node-fetch');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import cors from 'cors';
+import fetch from 'node-fetch';
 
 const app = express();
 
@@ -52,6 +53,10 @@ app.use('/api', async (req, res) => {
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'UP' });
 });
+
+// Get current file path (replacement for __dirname in ES modules)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Serve static files
 const distPath = path.join(__dirname, 'dist/angular-echarts-dashboard');
