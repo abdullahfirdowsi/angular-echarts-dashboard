@@ -1,6 +1,0 @@
-2025/05/07 17:03:36 [error] 13056#29652: *1 access forbidden by rule, client: 172.16.1.28, server: , request: "GET / HTTP/1.1", host: "172.16.1.28:5000"
-2025/05/07 17:03:36 [error] 13056#29652: *1 access forbidden by rule, client: 172.16.1.28, server: , request: "GET /favicon.ico HTTP/1.1", host: "172.16.1.28:5000", referrer: "http://172.16.1.28:5000/"
-2025/05/07 17:07:02 [emerg] 2004#12308: unknown directive "//" in C:\Data\Projects\echarts-dashboard\nginx\nginx-1.27.5/conf/nginx.conf:21
-2025/05/07 17:08:29 [notice] 19428#33228: signal process started
-2025/05/07 17:08:29 [error] 19428#33228: OpenEvent("Global\ngx_reload_24564") failed (2: The system cannot find the file specified)
-2025/05/08 10:40:35 [emerg] 29248#26496: bind() to 111.93.108.50:80 failed (10049: The requested address is not valid in its context)
